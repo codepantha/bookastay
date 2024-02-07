@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 import User from '../models/user';
-import verifyToken from '../middleware/auth';
+import validateToken from '../middleware/auth';
 
 const router = express.Router();
 
@@ -42,10 +42,11 @@ router.post(
         }
       );
 
-      res.cookie('auth_token', {
+      res.cookie('auth_token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 86400000
+        secure: true,
+        maxAge: 86400000,
+        sameSite: 'none'
       });
       res.status(200).json({ userId: user._id });
     } catch (error) {
@@ -55,7 +56,7 @@ router.post(
   }
 );
 
-router.get('/verify-token', verifyToken, async (req: Request, res: Response) => {
+router.get('/validate-token', validateToken, async (req: Request, res: Response) => {
   res.status(200).json({ userId: req.userId })
 })
 

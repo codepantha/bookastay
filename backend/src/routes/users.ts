@@ -40,8 +40,9 @@ router.post(
 
       res.cookie('auth_token', token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        maxAge: 86400000
+        secure: true,
+        maxAge: 86400000,
+        sameSite: 'none'
       });
 
       return res.status(201).json({ message: 'User registration successful!' });
