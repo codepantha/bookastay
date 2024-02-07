@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useMutation } from 'react-query';
 
 import * as apiClient from '../api-client';
+import { useAppContext } from '../contexts/AppContext';
 
 export type RegisterFormData = {
   firstName: string;
@@ -12,6 +13,8 @@ export type RegisterFormData = {
 };
 
 const Register = () => {
+  const { showToast } = useAppContext();
+
   const {
     register,
     watch,
@@ -21,12 +24,12 @@ const Register = () => {
 
   const mutation = useMutation(apiClient.register, {
     onSuccess: () => {
-      console.log('Registration successful')
+      showToast({ message: 'Registration successful!', type: 'SUCCESS' });
     },
     onError: (error: Error) => {
-      console.log(error.message)
+      showToast({ message: error.message, type: 'ERROR' });
     }
-  })
+  });
 
   const onSubmit = handleSubmit((data) => {
     mutation.mutate(data);
@@ -69,8 +72,8 @@ const Register = () => {
           {...register('email', { required: 'This field is required' })}
         />
         {errors.email && (
-            <span className="text-red-500 text-xs">{errors.email.message}</span>
-          )}
+          <span className="text-red-500 text-xs">{errors.email.message}</span>
+        )}
       </label>
       <label className="text-gray-700 text-sm font-bold flex-1">
         Password
@@ -86,8 +89,10 @@ const Register = () => {
           })}
         />
         {errors.password && (
-            <span className="text-red-500 text-xs">{errors.password.message}</span>
-          )}
+          <span className="text-red-500 text-xs">
+            {errors.password.message}
+          </span>
+        )}
       </label>
       <label className="text-gray-700 text-sm font-bold flex-1">
         Confirm Password
@@ -104,8 +109,10 @@ const Register = () => {
           })}
         />
         {errors.confirmPassword && (
-            <span className="text-red-500 text-xs">{errors.confirmPassword.message}</span>
-          )}
+          <span className="text-red-500 text-xs">
+            {errors.confirmPassword.message}
+          </span>
+        )}
       </label>
       <span>
         <button
