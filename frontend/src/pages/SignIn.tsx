@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 
 import * as apiClient from '../api-client';
 import { useAppContext } from '../contexts/AppContext';
@@ -17,22 +17,24 @@ const SignIn = () => {
     formState: { errors }
   } = useForm<SignInFormData>();
 
-  const { showToast } = useAppContext()
+  const { showToast } = useAppContext();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const mutation = useMutation(apiClient.login, {
     onSuccess: async () => {
-      showToast({ message: 'Sign in successful', type: 'SUCCESS' })
-      navigate('/')
+      showToast({ message: 'Sign in successful', type: 'SUCCESS' });
+      await queryClient.invalidateQueries('validateToken');
+      navigate('/');
     },
     onError: (error: Error) => {
-      showToast({ message: error.message, type: 'ERROR' })
+      showToast({ message: error.message, type: 'ERROR' });
     }
-  })
+  });
 
   const onSubmit = handleSubmit((data) => {
     mutation.mutate(data);
-  })
+  });
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
@@ -45,9 +47,7 @@ const SignIn = () => {
           {...register('email', { required: 'This field is required' })}
         />
         {errors.email && (
-          <span className="text-red-500 text-xs">
-            {errors.email.message}
-          </span>
+          <span className="text-red-500 text-xs">{errors.email.message}</span>
         )}
       </label>
       <label className="text-gray-700 text-sm font-bold flex-1">
@@ -58,9 +58,7 @@ const SignIn = () => {
           {...register('password', { required: 'This field is required' })}
         />
         {errors.email && (
-          <span className="text-red-500 text-xs">
-            {errors.email.message}
-          </span>
+          <span className="text-red-500 text-xs">{errors.email.message}</span>
         )}
       </label>
       <span>
