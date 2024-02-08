@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 
 import * as apiClient from '../api-client';
 import { useAppContext } from '../contexts/AppContext';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export type SignInFormData = {
   email: string;
@@ -61,14 +61,20 @@ const SignIn = () => {
           <span className="text-red-500 text-xs">{errors.email.message}</span>
         )}
       </label>
-      <span>
+      <div className="flex items-center justify-between">
+        <p className="text-sm">
+          Not Registered?{' '}
+          <Link to="/register" className="underline">
+            Create an account!
+          </Link>
+        </p>
         <button
           type="submit"
           className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl rounded"
         >
           Sign In
         </button>
-      </span>
+      </div>
     </form>
   );
 };
