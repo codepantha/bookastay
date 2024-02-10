@@ -4,7 +4,7 @@ import { SignInFormData } from "./pages/SignIn";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
 export const register = async (formData: RegisterFormData) => {
-  const res = await fetch(`${API_BASE_URL}/users/register`, {
+  const res = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -21,7 +21,7 @@ export const register = async (formData: RegisterFormData) => {
 }
 
 export const validateToken = async () => {
-  const res = await fetch(`${API_BASE_URL}/auth/validate-token`, {
+  const res = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     credentials: 'include',
   })
 
@@ -33,7 +33,7 @@ export const validateToken = async () => {
 };
 
 export const login = async (formData: SignInFormData) => {
-  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+  const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -50,7 +50,7 @@ export const login = async (formData: SignInFormData) => {
 }
 
 export const signOut = async () => {
-  const res = await fetch(`${API_BASE_URL}/auth/logout`, {
+  const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: 'POST',
     credentials: 'include'
   })
