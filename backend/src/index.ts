@@ -35,6 +35,12 @@ app.use('/api/users', userRoutes);
 app.use('/api/auth/', authRoutes);
 app.use('/api/my-hotels', myHotelRoutes);
 
+// Handle any requests that are not api requests by
+// React Router Dom and render the index.html
+app.get('*', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+})
+
 app.listen(3000, () => {
   console.log('app running on port 3000');
 });
