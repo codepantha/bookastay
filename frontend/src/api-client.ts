@@ -1,5 +1,5 @@
-import { RegisterFormData } from "./pages/Register";
-import { SignInFormData } from "./pages/SignIn";
+import { RegisterFormData } from './pages/Register';
+import { SignInFormData } from './pages/SignIn';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
 
@@ -8,22 +8,22 @@ export const register = async (formData: RegisterFormData) => {
     method: 'POST',
     credentials: 'include',
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
     body: JSON.stringify(formData)
-  })
+  });
 
   const data = await res.json();
 
   if (!res.ok) {
-    throw new Error(data.message)
+    throw new Error(data.message);
   }
-}
+};
 
 export const validateToken = async () => {
   const res = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
-    credentials: 'include',
-  })
+    credentials: 'include'
+  });
 
   if (!res.ok) {
     throw new Error('Invalid token');
@@ -47,13 +47,25 @@ export const login = async (formData: SignInFormData) => {
   if (!res.ok) throw new Error(data.message);
 
   return data;
-}
+};
 
 export const signOut = async () => {
   const res = await fetch(`${API_BASE_URL}/api/auth/logout`, {
     method: 'POST',
     credentials: 'include'
-  })
+  });
 
   if (!res.ok) throw new Error('Error during sign out');
-}
+};
+
+export const addMyHotel = async (hotelFormData: FormData) => {
+  const res = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    method: 'POST',
+    credentials: 'include',
+    body: hotelFormData
+  });
+
+  if (!res.ok) throw new Error('Failed to add hotel');
+
+  return res.json();
+};
